@@ -71,4 +71,20 @@ export class TrackService {
     this.favService.deleteTrack(id, true);
     this.tracks.splice(index, 1);
   }
+
+  deleteArtistRef(artistId: string) {
+    this.tracks.forEach((track, index) => {
+      if (track.artistId === artistId) {
+        this.tracks[index].artistId = null;
+      } 
+    });
+  }
+
+  deleteAlbumRef(albumId: string) {
+    this.tracks.forEach((track, index) => {
+      if (track.albumId === albumId) {
+        this.tracks[index].albumId = null;
+      } 
+    });
+  }
 }

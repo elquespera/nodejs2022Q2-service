@@ -4,6 +4,7 @@ import { AlbumDto } from './album.dto';
 import { Album } from './album.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { FavService } from '../favs/favs.service';
+import { TrackService } from '../track/track.service';
 
 @Injectable()
 export class AlbumService {
@@ -20,6 +21,9 @@ export class AlbumService {
   constructor(
     @Inject(forwardRef(() => FavService))
     private favService: FavService,
+
+    @Inject(forwardRef(() => TrackService))
+    private trackService: TrackService,
   ) {}
 
   findIndex(albumId: string): number {
@@ -66,6 +70,15 @@ export class AlbumService {
   delete(id: string): any {
     const index = this.findIndex(id);
     this.favService.deleteAlbum(id, true);
+    this.trackService.deleteAlbumRef(id);
     this.albums.splice(index, 1);
+  }
+
+  deleteArtistRef(artistId: string) {
+    this.albums.forEach((album, index) => {
+      if (album.artistId === artistId) {
+        this.albums[index].artistId = null;
+      } 
+    });
   }
 }

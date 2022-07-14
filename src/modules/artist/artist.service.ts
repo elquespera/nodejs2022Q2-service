@@ -4,6 +4,8 @@ import { ArtistDto } from './artist.dto';
 import { Artist } from './artist.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { FavService } from '../favs/favs.service';
+import { AlbumService } from '../album/album.service';
+import { TrackService } from '../track/track.service';
 
 @Injectable()
 export class ArtistService {
@@ -19,6 +21,12 @@ export class ArtistService {
   constructor(
     @Inject(forwardRef(() => FavService))
     private favService: FavService,
+
+    @Inject(forwardRef(() => AlbumService))
+    private albumService: AlbumService,
+
+    @Inject(forwardRef(() => TrackService))
+    private trackService: TrackService,
   ) {}
 
   findIndex(artistId: string): number {
@@ -63,6 +71,8 @@ export class ArtistService {
   delete(id: string): any {
     const index = this.findIndex(id);
     this.favService.deleteArtist(id, true);
+    this.albumService.deleteArtistRef(id);
+    this.trackService.deleteArtistRef(id);
     this.artists.splice(index, 1);
   }
 }
