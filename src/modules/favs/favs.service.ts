@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { AlbumService } from "../album/album.service";
 import { ArtistService } from "../artist/artist.service";
 import { TrackService } from "../track/track.service";
@@ -14,14 +14,14 @@ export class FavService {
   }
 
   constructor(
-    @Inject(ArtistService)
+    @Inject(forwardRef(() => ArtistService))
     private artistService: ArtistService,
 
-    @Inject(AlbumService)
+    @Inject(forwardRef(() => AlbumService))
     private albumService: AlbumService,
 
-    @Inject(TrackService)
-    private trackService: TrackService
+    @Inject(forwardRef(() => TrackService))
+    private trackService: TrackService,
   ) {}
 
   findAll(): FavoritesRepsonse {
@@ -37,10 +37,13 @@ export class FavService {
     this.favs.artistIds.push(id);
   }
 
-  deleteArtist(id: string) {
+  deleteArtist(id: string, silent = false) {
     const index = this.favs.artistIds.findIndex((artistId) => id === artistId);
-    if (index < 0) notFound('artist', id);
-    this.favs.artistIds.splice(index, 1);
+    if (index >= 0) {
+      this.favs.artistIds.splice(index, 1);
+    } else {
+      if (!silent) notFound('artist', id);
+    }
   }
 
   addAlbum(id: string) {
@@ -48,10 +51,13 @@ export class FavService {
     this.favs.albumIds.push(id);
   }
 
-  deleteAlbum(id: string) {
+  deleteAlbum(id: string, silent = false) {
     const index = this.favs.albumIds.findIndex((albumId) => id === albumId);
-    if (index < 0) notFound('album', id);
-    this.favs.albumIds.splice(index, 1);
+    if (index >= 0) {
+      this.favs.albumIds.splice(index, 1);
+    } else {
+      if (!silent) notFound('album', id);
+    }     
   }
 
   addTrack(id: string) {
@@ -59,10 +65,13 @@ export class FavService {
     this.favs.trackIds.push(id);
   }
 
-  deleteTrack(id: string) {
+  deleteTrack(id: string, silent = false) {
     const index = this.favs.trackIds.findIndex((trackId) => id === trackId);
-    if (index < 0) notFound('track', id);
-    this.favs.trackIds.splice(index, 1);
+    if (index >= 0) {
+      this.favs.trackIds.splice(index, 1);
+    } else {
+      if (!silent) notFound('track', id);
+    }
   }
 
   

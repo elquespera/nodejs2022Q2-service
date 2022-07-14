@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { notFound } from '../utils';
 import { AlbumDto } from './album.dto';
 import { Album } from './album.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { FavService } from '../favs/favs.service';
 
 @Injectable()
 export class AlbumService {
@@ -15,6 +16,11 @@ export class AlbumService {
       artistId: null,
     },
   ];
+
+  constructor(
+    @Inject(forwardRef(() => FavService))
+    private favService: FavService,
+  ) {}
 
   findIndex(albumId: string): number {
     const index = this.albums.findIndex(({ id }) => albumId === id);
@@ -59,6 +65,7 @@ export class AlbumService {
 
   delete(id: string): any {
     const index = this.findIndex(id);
+    this.favService.deleteAlbum(id, true);
     this.albums.splice(index, 1);
   }
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { notFound } from '../utils';
 import { TrackDto } from './track.dto';
 import { Track } from './track.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { FavService } from '../favs/favs.service';
 
 @Injectable()
 export class TrackService {
@@ -16,6 +17,11 @@ export class TrackService {
       duration: 120,
     },
   ];
+
+  constructor(
+    @Inject(forwardRef(() => FavService))
+    private favService: FavService,
+  ) {}
 
   findIndex(trackId: string): number {
     const index = this.tracks.findIndex(({ id }) => trackId === id);
@@ -62,6 +68,7 @@ export class TrackService {
 
   delete(id: string): any {
     const index = this.findIndex(id);
+    this.favService.deleteTrack(id, true);
     this.tracks.splice(index, 1);
   }
 }

@@ -36,16 +36,16 @@ export class FavController {
   }
 
   //Track
-  // @Post('/track/:id')
-  // async addTrack(@Param() params: UUIDParams): Promise<any> {
-  //   return this.favService.addTrack(params.id);
-  // }
+  @Post('/track/:id')
+  async addTrack(@Param() params: UUIDParams): Promise<any> {
+    return this.favService.addTrack(params.id);
+  }
 
-  // @Delete('/track/:id')
-  // @HttpCode(204)
-  // async deleteTrack(@Param() params: UUIDParams): Promise<any> {
-  //   this.favService.deleteTrack(params.id);
-  // }
+  @Delete('/track/:id')
+  @HttpCode(204)
+  async deleteTrack(@Param() params: UUIDParams): Promise<any> {
+    this.favService.deleteTrack(params.id);
+  }
 
 
 }
