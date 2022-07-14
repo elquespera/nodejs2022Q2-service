@@ -8,6 +8,6 @@ import { AlbumService } from './album.service';
   imports: [forwardRef(() => FavModule), forwardRef(() => TrackModule)],
   controllers: [AlbumController],
   providers: [AlbumService],
-  exports: [AlbumService]
+  exports: [AlbumService],
 })
 export class AlbumModule {}

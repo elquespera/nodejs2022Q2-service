@@ -6,17 +6,7 @@ import { forbidden, notFound } from '../utils';
 
 @Injectable()
 export class UserService {
-  // private users: Array<User> = [];
-  private readonly users: Array<User> = [
-    {
-      id: 'id',
-      login: 'login',
-      password: 'pswd',
-      version: 1,
-      createdAt: 21341324,
-      updatedAt: 234124,
-    },
-  ];
+  private users: Array<User> = [];
 
   private formatUser(index: number): UserDto {
     const user = this.users[index];

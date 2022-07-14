@@ -9,14 +9,7 @@ import { TrackService } from '../track/track.service';
 
 @Injectable()
 export class ArtistService {
-  // private artists: Array<Artist> = [];
-  private readonly artists: Array<Artist> = [
-    {
-      id: 'e493c68b-3a4a-4daf-b051-33eaf34d8e26',
-      name: 'Adele',
-      grammy: true,
-    },
-  ];
+  private artists: Array<Artist> = [];
 
   constructor(
     @Inject(forwardRef(() => FavService))

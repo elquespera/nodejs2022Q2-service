@@ -1,17 +1,17 @@
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
-import { AlbumService } from "../album/album.service";
-import { ArtistService } from "../artist/artist.service";
-import { TrackService } from "../track/track.service";
-import { notFound, unprocessable } from "../utils";
-import { Favorites, FavoritesRepsonse } from "./favs.interface";
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { AlbumService } from '../album/album.service';
+import { ArtistService } from '../artist/artist.service';
+import { TrackService } from '../track/track.service';
+import { notFound, unprocessable } from '../utils';
+import { Favorites, FavoritesRepsonse } from './favs.interface';
 
 @Injectable()
 export class FavService {
   private readonly favs: Favorites = {
     artistIds: [],
     albumIds: [],
-    trackIds: []
-  }
+    trackIds: [],
+  };
 
   constructor(
     @Inject(forwardRef(() => ArtistService))
@@ -29,14 +29,13 @@ export class FavService {
       albums: this.favs.albumIds.map((id) => this.albumService.findOne(id)),
       artists: this.favs.artistIds.map((id) => this.artistService.findOne(id)),
       tracks: this.favs.trackIds.map((id) => this.trackService.findOne(id)),
-    }
+    };
   }
 
   addArtist(id: string) {
     if (this.artistService.contains(id)) {
       this.favs.artistIds.push(id);
-    } else
-      unprocessable();
+    } else unprocessable();
   }
 
   deleteArtist(id: string, silent = false) {
@@ -51,8 +50,7 @@ export class FavService {
   addAlbum(id: string) {
     if (this.albumService.contains(id)) {
       this.favs.albumIds.push(id);
-    } else
-      unprocessable();
+    } else unprocessable();
   }
 
   deleteAlbum(id: string, silent = false) {
@@ -61,14 +59,13 @@ export class FavService {
       this.favs.albumIds.splice(index, 1);
     } else {
       if (!silent) notFound('album', id);
-    }     
+    }
   }
 
   addTrack(id: string) {
     if (this.trackService.contains(id)) {
       this.favs.trackIds.push(id);
-    } else
-      unprocessable();
+    } else unprocessable();
   }
 
   deleteTrack(id: string, silent = false) {
@@ -79,8 +76,6 @@ export class FavService {
       if (!silent) notFound('track', id);
     }
   }
-
-  
 
   // getAll(): FavoritesRepsonse {
   //   return {

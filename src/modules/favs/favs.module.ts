@@ -6,10 +6,13 @@ import { FavController } from './favs.controller';
 import { FavService } from './favs.service';
 
 @Module({
-  imports: [forwardRef(() => ArtistModule), forwardRef(() => AlbumModule), 
-    forwardRef(() => TrackModule)],
+  imports: [
+    forwardRef(() => ArtistModule),
+    forwardRef(() => AlbumModule),
+    forwardRef(() => TrackModule),
+  ],
   controllers: [FavController],
   providers: [FavService],
-  exports: [FavService]
+  exports: [FavService],
 })
 export class FavModule {}

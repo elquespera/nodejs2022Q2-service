@@ -7,16 +7,7 @@ import { FavService } from '../favs/favs.service';
 
 @Injectable()
 export class TrackService {
-  // private tracks: Array<Track> = [];
-  private readonly tracks: Array<Track> = [
-    {
-      id: 'id',
-      name: 'Something',
-      albumId: 'id',
-      artistId: 'id',
-      duration: 120,
-    },
-  ];
+  private tracks: Array<Track> = [];
 
   constructor(
     @Inject(forwardRef(() => FavService))
@@ -80,7 +71,7 @@ export class TrackService {
     this.tracks.forEach((track, index) => {
       if (track.artistId === artistId) {
         this.tracks[index].artistId = null;
-      } 
+      }
     });
   }
 
@@ -88,7 +79,7 @@ export class TrackService {
     this.tracks.forEach((track, index) => {
       if (track.albumId === albumId) {
         this.tracks[index].albumId = null;
-      } 
+      }
     });
   }
 }
