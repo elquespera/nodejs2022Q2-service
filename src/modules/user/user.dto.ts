@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class UserDto {
   id: string; // uuid v4
@@ -16,8 +16,8 @@ export class CreateUserDto {
   password: string;
 }
 
-export class UpdatePasswordDto { 
-  @IsString() 
+export class UpdatePasswordDto {
+  @IsString()
   oldPassword: string; // previous password
 
   @IsString()

@@ -1,17 +1,19 @@
-import { Injectable } from "@nestjs/common";
-import { notFound } from "../utils";
-import { ArtistDto } from "./artist.dto";
-import { Artist } from "./artist.interface";
+import { Injectable } from '@nestjs/common';
+import { notFound } from '../utils';
+import { ArtistDto } from './artist.dto';
+import { Artist } from './artist.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ArtistService {
   // private artists: Array<Artist> = [];
-  private readonly artists: Array<Artist> = [{
-    id: 'id',
-    name: 'Adele',
-    grammy: true,
-  }];
+  private readonly artists: Array<Artist> = [
+    {
+      id: 'e493c68b-3a4a-4daf-b051-33eaf34d8e26',
+      name: 'Adele',
+      grammy: true,
+    },
+  ];
 
   findIndex(artistId: string): number {
     const index = this.artists.findIndex(({ id }) => artistId === id);
@@ -20,12 +22,12 @@ export class ArtistService {
   }
 
   findOne(id: string): Artist {
-    const index = this.findIndex(id); 
+    const index = this.findIndex(id);
     return this.artists[index];
   }
 
   findAll(): Array<Artist> {
-    return this.artists; 
+    return this.artists;
   }
 
   create(dto: ArtistDto): Artist {
@@ -34,10 +36,10 @@ export class ArtistService {
       id: uuidv4(),
       name,
       grammy,
-    }
+    };
     this.artists.push(newArtist);
     return newArtist;
-  } 
+  }
 
   update(artistId: string, dto: ArtistDto): Artist {
     const artist = this.findOne(artistId);
@@ -47,10 +49,10 @@ export class ArtistService {
       id,
       name,
       grammy,
-    }
+    };
     this.artists.push(updatedArtist);
     return updatedArtist;
-  } 
+  }
 
   delete(id: string): any {
     const index = this.findIndex(id);

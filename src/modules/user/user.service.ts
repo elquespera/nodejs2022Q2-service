@@ -7,14 +7,16 @@ import { forbidden, notFound } from '../utils';
 @Injectable()
 export class UserService {
   // private users: Array<User> = [];
-  private readonly users: Array<User> = [{
+  private readonly users: Array<User> = [
+    {
       id: 'id',
       login: 'login',
       password: 'pswd',
       version: 1,
       createdAt: 21341324,
       updatedAt: 234124,
-  }];
+    },
+  ];
 
   private formatUser(index: number): UserDto {
     const user = this.users[index];
@@ -30,13 +32,12 @@ export class UserService {
   }
 
   findOne(userId: string): UserDto {
-    const index = this.findIndex(userId); 
+    const index = this.findIndex(userId);
     return this.formatUser(index);
   }
 
-
   findAll(): Array<UserDto> {
-    return this.users.map((user, index) => this.formatUser(index)); 
+    return this.users.map((user, index) => this.formatUser(index));
   }
 
   create(dto: CreateUserDto): UserDto {
@@ -49,7 +50,7 @@ export class UserService {
       version: 1,
       createdAt: timestamp,
       updatedAt: timestamp,
-    }
+    };
     this.users.push(newUser);
     return this.formatUser(this.users.length - 1);
   }
@@ -58,7 +59,8 @@ export class UserService {
     const userIndex = this.findIndex(userId);
     const user = this.users[userIndex];
     const { id, createdAt, version, login, password } = user;
-    if (password !== updateDto.oldPassword) forbidden(`The old password does not match`);
+    if (password !== updateDto.oldPassword)
+      forbidden(`The old password does not match`);
     const updatedUser: User = {
       id,
       login,
@@ -66,7 +68,7 @@ export class UserService {
       version: version + 1,
       createdAt,
       updatedAt: Date.now(),
-    }
+    };
     this.users[userIndex] = updatedUser;
     return this.formatUser(userIndex);
   }

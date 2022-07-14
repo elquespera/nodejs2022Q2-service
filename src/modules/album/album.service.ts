@@ -1,18 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { notFound } from "../utils";
-import { AlbumDto } from "./album.dto";
-import { Album } from "./album.interface";
+import { Injectable } from '@nestjs/common';
+import { notFound } from '../utils';
+import { AlbumDto } from './album.dto';
+import { Album } from './album.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AlbumService {
   // private artists: Array<Album> = [];
-  private readonly albums: Array<Album> = [{
-    id: 'id',
-    name: 'Adele',
-    year: 2008,
-    artistId: null
-  }];
+  private readonly albums: Array<Album> = [
+    {
+      id: 'id',
+      name: 'Adele',
+      year: 2008,
+      artistId: null,
+    },
+  ];
 
   findIndex(albumId: string): number {
     const index = this.albums.findIndex(({ id }) => albumId === id);
@@ -21,12 +23,12 @@ export class AlbumService {
   }
 
   findOne(id: string): Album {
-    const index = this.findIndex(id); 
+    const index = this.findIndex(id);
     return this.albums[index];
   }
 
   findAll(): Array<Album> {
-    return this.albums; 
+    return this.albums;
   }
 
   create(dto: AlbumDto): Album {
@@ -36,10 +38,10 @@ export class AlbumService {
       name,
       year,
       artistId,
-    }
+    };
     this.albums.push(newAlbum);
     return newAlbum;
-  } 
+  }
 
   update(albumId: string, dto: AlbumDto): Album {
     const album = this.findOne(albumId);
@@ -50,10 +52,10 @@ export class AlbumService {
       name,
       year,
       artistId,
-    }
+    };
     this.albums.push(updatedAlbum);
     return updatedAlbum;
-  } 
+  }
 
   delete(id: string): any {
     const index = this.findIndex(id);
