@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ArtistService {
-  // private artists: Array<User> = [];
+  // private artists: Array<Artist> = [];
   private readonly artists: Array<Artist> = [{
     id: 'id',
     name: 'Adele',
@@ -15,7 +15,7 @@ export class ArtistService {
 
   findIndex(artistId: string): number {
     const index = this.artists.findIndex(({ id }) => artistId === id);
-    if (index < 0) notFound('artistd', artistId);
+    if (index < 0) notFound('artist', artistId);
     return index;
   }
 
