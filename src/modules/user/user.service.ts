@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UserDto, UpdatePasswordDto } from './user.dto';
 import { User } from './user.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { badRequest, forbidden, notFound } from '../utils';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
       version: 1,
       createdAt: 21341324,
       updatedAt: 234124,
-    }];
+  }];
 
   private formatUser(index: number): UserDto {
     const user = this.users[index];
@@ -23,7 +24,9 @@ export class UserService {
   }
 
   findIndex(userId: string): number {
-    return this.users.findIndex(({ id }) => userId === id);
+    const index = this.users.findIndex(({ id }) => userId === id);
+    if (index < 0) notFound('user', userId);
+    return index;
   }
 
   findOne(userId: string): UserDto {
@@ -38,12 +41,13 @@ export class UserService {
 
   create(userDto: CreateUserDto): UserDto {
     const { login, password } = userDto;
+    if (!login || !password) badRequest();
     const timestamp = Date.now();
     const newUser: User = {
       id: uuidv4(),
       login,
       password,
-      version: 0,
+      version: 1,
       createdAt: timestamp,
       updatedAt: timestamp,
     }
@@ -54,7 +58,9 @@ export class UserService {
   update(userId: string, updateDto: UpdatePasswordDto): UserDto {
     const userIndex = this.findIndex(userId);
     const user = this.users[userIndex];
-    const { id, createdAt, version, login } = user;
+    if (!updateDto.newPassword || !updateDto.oldPassword) badRequest();
+    const { id, createdAt, version, login, password } = user;
+    if (password !== updateDto.oldPassword) forbidden(`The old password does not match`);
     const updatedUser: User = {
       id,
       login,

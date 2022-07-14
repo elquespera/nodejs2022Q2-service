@@ -1,18 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { UserDto, CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { UserService } from './user.service';
+import { verifyUUID } from './../utils';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @Get()
   async getAll():Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  async getOne(@Param() params): Promise<UserDto>  {
-    return this.userService.findOne(params.id);
+  async getOne(@Param('id') id): Promise<UserDto>  {
+    verifyUUID(id);
+    const user = this.userService.findOne(id);
+    return user;
   }
   
   @Post()
@@ -21,12 +25,15 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Param() params, @Body() updateDto: UpdatePasswordDto): Promise<UserDto>  {
-    return this.userService.update(params.id, updateDto);
+  async update(@Param('id') id, @Body() updateDto: UpdatePasswordDto): Promise<UserDto>  {
+    verifyUUID(id);
+    return this.userService.update(id, updateDto);
   }
 
   @Delete(':id')
-  async delete(@Param() params): Promise<any>  {
-    return this.userService.delete(params.id);
+  @HttpCode(204)
+  async delete(@Param('id') id): Promise<any>  {
+    verifyUUID(id);
+    return this.userService.delete(id);
   }
 }
