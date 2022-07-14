@@ -15,27 +15,20 @@ Everything has been completed according to the task description, therefore maxim
 ## Basic Scope
 
  - [x] **+10** The repository with the application contains a `Readme.md` file containing detailed instructions for installing, running and using the application
-
  - [x] **+10** +The application code that worked with `Users` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-
  - [x] **+10** The application code that worked with `Tracks` instance instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-
  - [x] **+10** The application code that worked with `Albums` instance instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-
  - [x] **+10** The application code that worked with `Artists` instance instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-
  - [x] **+10** The application code that worked with `Favorites` instance instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-
  - [x] **+10** For each successfully passed test
 
- ## Advanced Scope
+## Advanced Scope
 
  - [x] **+10** PORT value is stored into `.env` file
-
  - [x] **+20** OpenAPI spec in `doc` folder corresponds with assignment
 
 
-  ## Forfeits (none)
+## Forfeits (none)
 
   - **-660** Changes in tests
   - **-30%** of **max task score** Commits after deadline (except commits that affect only Readme.md, .gitignore, etc.)
