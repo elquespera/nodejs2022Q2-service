@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { AlbumService } from "../album/album.service";
 import { ArtistService } from "../artist/artist.service";
 import { TrackService } from "../track/track.service";
-import { notFound } from "../utils";
+import { notFound, unprocessable } from "../utils";
 import { Favorites, FavoritesRepsonse } from "./favs.interface";
 
 @Injectable()
@@ -33,8 +33,10 @@ export class FavService {
   }
 
   addArtist(id: string) {
-    this.artistService.findOne(id);
-    this.favs.artistIds.push(id);
+    if (this.artistService.contains(id)) {
+      this.favs.artistIds.push(id);
+    } else
+      unprocessable();
   }
 
   deleteArtist(id: string, silent = false) {
@@ -47,8 +49,10 @@ export class FavService {
   }
 
   addAlbum(id: string) {
-    this.albumService.findOne(id);
-    this.favs.albumIds.push(id);
+    if (this.albumService.contains(id)) {
+      this.favs.albumIds.push(id);
+    } else
+      unprocessable();
   }
 
   deleteAlbum(id: string, silent = false) {
@@ -61,8 +65,10 @@ export class FavService {
   }
 
   addTrack(id: string) {
-    this.trackService.findOne(id);
-    this.favs.trackIds.push(id);
+    if (this.trackService.contains(id)) {
+      this.favs.trackIds.push(id);
+    } else
+      unprocessable();
   }
 
   deleteTrack(id: string, silent = false) {

@@ -29,6 +29,10 @@ export class ArtistService {
     private trackService: TrackService,
   ) {}
 
+  contains(artistId: string): boolean {
+    return this.artists.some(({ id }) => artistId === id);
+  }
+
   findIndex(artistId: string): number {
     const index = this.artists.findIndex(({ id }) => artistId === id);
     if (index < 0) notFound('artist', artistId);

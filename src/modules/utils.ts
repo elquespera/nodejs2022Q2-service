@@ -1,4 +1,4 @@
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 
 export const notFound = (what: string, id: string) => {
   throw new NotFoundException(
@@ -8,4 +8,8 @@ export const notFound = (what: string, id: string) => {
 
 export const forbidden = (msg = `Access forbidden`) => {
   throw new ForbiddenException(msg);
+};
+
+export const unprocessable = (msg = `Unprocessable item`) => {
+  throw new UnprocessableEntityException(msg);
 };

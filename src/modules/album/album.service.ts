@@ -26,6 +26,10 @@ export class AlbumService {
     private trackService: TrackService,
   ) {}
 
+  contains(albumId: string): boolean {
+    return this.albums.some(({ id }) => albumId === id);
+  }
+
   findIndex(albumId: string): number {
     const index = this.albums.findIndex(({ id }) => albumId === id);
     if (index < 0) notFound('album', albumId);

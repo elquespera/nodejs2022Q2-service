@@ -23,6 +23,10 @@ export class TrackService {
     private favService: FavService,
   ) {}
 
+  contains(trackId: string): boolean {
+    return this.tracks.some(({ id }) => trackId === id);
+  }
+
   findIndex(trackId: string): number {
     const index = this.tracks.findIndex(({ id }) => trackId === id);
     if (index < 0) notFound('track', trackId);
