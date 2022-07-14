@@ -1,4 +1,6 @@
-export interface UserDto {
+import { IsString } from "class-validator";
+
+export class UserDto {
   id: string; // uuid v4
   login: string;
   version: number; // integer number, increments on update
@@ -6,12 +8,18 @@ export interface UserDto {
   updatedAt: number; // timestamp of last update
 }
 
-export interface CreateUserDto {  
+export class CreateUserDto {
+  @IsString()
   login: string;
+
+  @IsString()
   password: string;
 }
 
-export interface UpdatePasswordDto {  
+export class UpdatePasswordDto { 
+  @IsString() 
   oldPassword: string; // previous password
+
+  @IsString()
   newPassword: string; // new password
 }

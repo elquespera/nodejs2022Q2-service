@@ -1,39 +1,35 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
-import { UserDto, CreateUserDto, UpdatePasswordDto } from './user.dto';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
+import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { UserService } from './user.service';
-import { verifyUUID } from './../utils';
+import { UUIDParams } from '../uuidParams';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAll():Promise<UserDto[]> {
+  async getAll():Promise<any[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  async getOne(@Param('id') id): Promise<UserDto>  {
-    verifyUUID(id);
-    const user = this.userService.findOne(id);
-    return user;
+  async getOne(@Param() params: UUIDParams): Promise<any>  {
+    return this.userService.findOne(params.id);
   }
   
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<any> {
     return this.userService.create(createUserDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id, @Body() updateDto: UpdatePasswordDto): Promise<UserDto>  {
-    verifyUUID(id);
-    return this.userService.update(id, updateDto);
+  async update(@Param() params: UUIDParams, @Body() updateDto: UpdatePasswordDto): Promise<any>  {
+    return this.userService.update(params.id, updateDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id): Promise<any>  {
-    verifyUUID(id);
-    return this.userService.delete(id);
+  async delete(@Param() params: UUIDParams): Promise<any>  {
+    return this.userService.delete(params.id);
   }
 }
