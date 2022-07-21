@@ -2,18 +2,36 @@ version: "3.7"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - ./usr/src/app/node_modules
     ports:
       - "${PORT}:${PORT}"
+    command: npm run start:dev
     depends_on:
       - db
 
   db:
-    build: ./db/.
+    build: 
+      context: .
+      dockerfile: Dockerfile-db
+    env_file:
+      - .env
+    restart: always
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     ports:
       - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
 
+volumes:
+  db-data: 

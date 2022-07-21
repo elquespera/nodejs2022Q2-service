@@ -1,8 +1,11 @@
-FROM node:lts-alpine
+FROM node:lts-alpine As development
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
+WORKDIR /usr/src/app
 
-CMD [ "npm", "start"]
+COPY --chown=node:node package*.json ./
+
+RUN npm ci
+
+COPY --chown=node:node . .
+
+USER node
