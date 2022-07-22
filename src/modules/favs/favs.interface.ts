@@ -1,6 +1,6 @@
-import { Artist } from '../artist/artist.interface';
 import { AlbumEntity } from '../album/album.entity';
-import { Track } from '../track/track.interface';
+import { TrackEntity } from '../track/track.entity';
+import { ArtistEntity } from '../artist/artist.entity';
 
 export interface Favorites {
   artistIds: string[];
@@ -9,7 +9,7 @@ export interface Favorites {
 }
 
 export interface FavoritesRepsonse {
-  artists: Artist[];
+  artists: ArtistEntity[];
   albums: AlbumEntity[];
-  tracks: Track[];
+  tracks: TrackEntity[];
 }
