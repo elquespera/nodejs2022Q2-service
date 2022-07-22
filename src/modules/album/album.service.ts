@@ -30,38 +30,19 @@ export class AlbumService {
 
   async contains(albumId: string): Promise<boolean> {
     return await this.findAlbum(albumId, true) !== undefined;
-    // return this.albums.some(({ id }) => albumId === id);
   }
-
-  // findIndex(albumId: string): number {
-  //   const index = this.albums.findIndex(({ id }) => albumId === id);
-  //   if (index < 0) notFound('album', albumId);
-  //   return index;
-  // }
 
   async findOne(id: string): Promise<AlbumEntity> {
     return await this.findAlbum(id);
-    // const index = this.findIndex(id);
-    // return this.albums[index];
   }
 
   async findAll() {
     return await this.albumRepository.find();
-    // return this.albums;
   }
 
   async create(dto: AlbumDto): Promise<AlbumEntity> {
     const createdAlbum  = this.albumRepository.create(dto);    
     return await this.albumRepository.save(createdAlbum);
-    // const { name, year, artistId } = dto;
-    // const newAlbum: Album = {
-    //   id: uuidv4(),
-    //   name,
-    //   year,
-    //   artistId,
-    // };
-    // this.albums.push(newAlbum);
-    // return newAlbum;
   }
 
   async update(albumId: string, dto: AlbumDto): Promise<AlbumEntity> {
@@ -71,16 +52,6 @@ export class AlbumService {
     album.year = year;
     album.artistId = artistId;
     return await this.albumRepository.save(album);
-
-    // const { id } = album;
-    // const updatedAlbum: Album = {
-    //   id,
-    //   name,
-    //   year,
-    //   artistId,
-    // };
-    // this.albums.push(updatedAlbum);
-    // return updatedAlbum;
   }
 
   async delete(id: string) {
@@ -88,11 +59,6 @@ export class AlbumService {
     await this.albumRepository.delete(id); 
     this.favService.deleteAlbum(id, true);
     this.trackService.deleteAlbumRef(id);
-
-    // const index = this.findIndex(id);
-    // this.favService.deleteAlbum(id, true);
-    // this.trackService.deleteAlbumRef(id);
-    // this.albums.splice(index, 1);
   }
 
   deleteArtistRef(artistId: string) {
