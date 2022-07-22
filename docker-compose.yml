@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 networks:
   default:
@@ -13,14 +13,16 @@ services:
       target: development
     env_file:
       - .env
+    restart: always
     volumes:
       - .:/usr/src/app
-      - ./usr/src/app/node_modules
     ports:
       - "${PORT}:${PORT}"
     command: npm run start:dev
     depends_on:
       - db
+    links:
+      - ${DB_HOST}
 
   db:
     build: 
@@ -37,7 +39,7 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - ./db-data:/var/lib/postgresql/data
-    command: postgres -c 'max_connections=1000'
+    command: postgres -c 'max_connections=1000' '-c' 'logging_collector=on' '-c' 'log_statement=mod'
 
 volumes:
   db-data: 

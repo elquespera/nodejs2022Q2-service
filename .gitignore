@@ -38,4 +38,4 @@ lerna-debug.log*
 # ENV
 .env
 
-crosscheck
+./db-data
