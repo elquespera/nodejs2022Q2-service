@@ -2,10 +2,12 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { notFound } from '../utils';
 import { ArtistDto } from './artist.dto';
 import { Artist } from './artist.interface';
-import { v4 as uuidv4 } from 'uuid';
 import { FavService } from '../favs/favs.service';
 import { AlbumService } from '../album/album.service';
 import { TrackService } from '../track/track.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArtistEntity } from './artist.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistService {
@@ -20,56 +22,77 @@ export class ArtistService {
 
     @Inject(forwardRef(() => TrackService))
     private trackService: TrackService,
+
+    @InjectRepository(ArtistEntity)
+    private artistRepository: Repository<ArtistEntity>,
   ) {}
 
-  contains(artistId: string): boolean {
-    return this.artists.some(({ id }) => artistId === id);
+  async findArtist(artistId: string, silent: boolean = false): Promise<ArtistEntity> {
+    const artist = await this.artistRepository.findOne({ where: { id: artistId } });
+    if (artist) return artist;
+    if (!silent) notFound('artist', artistId);
+    return undefined;
   }
 
-  findIndex(artistId: string): number {
-    const index = this.artists.findIndex(({ id }) => artistId === id);
-    if (index < 0) notFound('artist', artistId);
-    return index;
+  async contains(artistId: string): Promise<boolean> {
+    return await this.findArtist(artistId, true) !== undefined;
+    // return this.artists.some(({ id }) => artistId === id);
   }
 
-  findOne(id: string): Artist {
-    const index = this.findIndex(id);
-    return this.artists[index];
+  // findIndex(artistId: string): number {
+  //   const index = this.artists.findIndex(({ id }) => artistId === id);
+  //   if (index < 0) notFound('artist', artistId);
+  //   return index;
+  // }
+
+  async findOne(id: string): Promise<ArtistEntity> {
+    return await this.findArtist(id);
+    // const index = this.findIndex(id);
+    // return this.artists[index];
   }
 
-  findAll(): Array<Artist> {
-    return this.artists;
+  async findAll() {
+    return await this.artistRepository.find();
+    // return this.artists;
   }
 
-  create(dto: ArtistDto): Artist {
+  async create(dto: ArtistDto): Promise<Artist> {
+    const createdArtist  = this.artistRepository.create(dto);    
+    return await this.artistRepository.save(createdArtist);
+    // const { name, grammy } = dto;
+    // const newArtist: Artist = {
+    //   id: uuidv4(),
+    //   name,
+    //   grammy,
+    // };
+    // this.artists.push(newArtist);
+    // return newArtist;
+  }
+
+  async update(artistId: string, dto: ArtistDto): Promise<Artist> {
+    const artist = await this.findOne(artistId);
     const { name, grammy } = dto;
-    const newArtist: Artist = {
-      id: uuidv4(),
-      name,
-      grammy,
-    };
-    this.artists.push(newArtist);
-    return newArtist;
+    artist.name = name;
+    artist.grammy = grammy;
+    return await this.artistRepository.save(artist);
+    // const { id } = artist;
+    // const updatedArtist: Artist = {
+    //   id,
+    //   name,
+    //   grammy,
+    // };
+    // this.artists.push(updatedArtist);
+    // return updatedArtist;
   }
 
-  update(artistId: string, dto: ArtistDto): Artist {
-    const artist = this.findOne(artistId);
-    const { id } = artist;
-    const { name, grammy } = dto;
-    const updatedArtist: Artist = {
-      id,
-      name,
-      grammy,
-    };
-    this.artists.push(updatedArtist);
-    return updatedArtist;
-  }
+  async delete(id: string) {
+    // const index = this.findIndex(id);
 
-  delete(id: string): any {
-    const index = this.findIndex(id);
+    await this.findOne(id);
+    await this.artistRepository.delete(id); 
     this.favService.deleteArtist(id, true);
     this.albumService.deleteArtistRef(id);
     this.trackService.deleteArtistRef(id);
-    this.artists.splice(index, 1);
+    // this.artists.splice(index, 1);
   }
 }

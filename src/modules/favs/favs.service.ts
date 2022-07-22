@@ -27,8 +27,8 @@ export class FavService {
   async findAll(): Promise<FavoritesRepsonse> {
     return {
       albums: [],//this.favs.albumIds.map((id) => this.albumService.findOne(id)),
-      artists: this.favs.artistIds.map((id) => this.artistService.findOne(id)),
-      tracks: this.favs.trackIds.map((id) => this.trackService.findOne(id)),
+      artists: [],//this.favs.artistIds.map((id) => this.artistService.findOne(id)),
+      tracks: [], //this.favs.trackIds.map((id) => this.trackService.findOne(id)),
     };
   }
 
