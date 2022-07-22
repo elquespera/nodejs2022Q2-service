@@ -8,9 +8,14 @@ const ormConfig = {
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'musicify',
-  entities: [joinPath(__dirname, 'modules', '**', '*.entity.ts')],
-  synchronize: false,
+  entities: [
+    joinPath(__dirname, 'modules', '**', '*.entity.js'), 
+    joinPath(__dirname, 'modules', '**', '*.entity.ts')
+  ],
+  synchronize: true,
   logging: true,
 } as DataSourceOptions;
+
+console.log(ormConfig);
 
 export { ormConfig };

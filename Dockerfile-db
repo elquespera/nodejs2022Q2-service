@@ -1,3 +1,1 @@
 FROM postgres:13-alpine
-
-# RUN mkdir ./db-data
