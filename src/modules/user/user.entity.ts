@@ -19,16 +19,18 @@ export class UserEntity {
   @Column({ type: 'int' })
   version: number = 1;
   
-  // @CreateDateColumn()
   @Column({ type: 'bigint' })
   createdAt: string = this.timestamp;
   
-  // @UpdateDateColumn()
   @Column({ type: 'bigint' })
   updatedAt: string = this.timestamp;
 
   format(): UserDto {
     const { id, login, version, createdAt, updatedAt } = this;
-    return { id, login, version, createdAt: parseInt(createdAt), updatedAt: parseInt(updatedAt) };
+    return { 
+      id, login, version, 
+      createdAt: parseInt(createdAt), 
+      updatedAt: parseInt(updatedAt),
+    };
   }
 }

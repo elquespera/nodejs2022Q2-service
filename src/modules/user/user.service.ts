@@ -13,12 +13,6 @@ export class UserService {
     private userRepository: Repository<UserEntity>
   ) {}
 
-  // findIndex(userId: string): number {
-  //   const index = this.users.findIndex(({ id }) => userId === id);
-  //   if (index < 0) notFound('user', userId);
-  //   return index;
-  // }
-
   async findUser(userId: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) notFound('user', userId);
