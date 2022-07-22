@@ -9,6 +9,6 @@ export class AlbumEntity extends CommonEntity {
   @Column()
   year: number;
 
-  @Column({ })
+  @Column({ nullable: true })
   artistId: string | null;
 }

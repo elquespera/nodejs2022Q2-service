@@ -13,15 +13,15 @@ export class UserService {
     private userRepository: Repository<UserEntity>
   ) {}
 
-  async findUser(userId: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user) notFound('user', userId);
+  async findUser(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    if (!user) notFound('user', id);
     return user;
   }
 
   async findOne(userId: string): Promise<UserDto> {
     const user = await this.findUser(userId);
-    return user.format();
+    return user.format(); 
   }
 
   async findAll() {
