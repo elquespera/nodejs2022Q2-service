@@ -1,15 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { UserDto } from './user.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { CommonEntity } from '../common.entity';
 
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity extends CommonEntity {
   private timestamp = Date.now().toString();
 
-  @PrimaryGeneratedColumn('uuid')
-  id: string = uuidv4(); // uuid v4
-  
   @Column()
   login: string;
 
