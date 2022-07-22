@@ -1,8 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { notFound } from '../utils';
 import { AlbumDto } from './album.dto';
-import { Album } from './album.interface';
-import { v4 as uuidv4 } from 'uuid';
 import { FavService } from '../favs/favs.service';
 import { TrackService } from '../track/track.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,7 +9,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumService {
-  private albums: Array<Album> = [];
 
   constructor(
     @Inject(forwardRef(() => FavService))
@@ -24,14 +21,15 @@ export class AlbumService {
     private albumRepository: Repository<AlbumEntity>,
   ) {}
 
-  async findAlbum(albumId: string): Promise<AlbumEntity> {
+  async findAlbum(albumId: string, silent: boolean = false): Promise<AlbumEntity> {
     const album = await this.albumRepository.findOne({ where: { id: albumId } });
-    if (!album) notFound('album', albumId);
-    return album;
+    if (album) return album;
+    if (!silent) notFound('album', albumId);
+    return undefined;
   }
 
   async contains(albumId: string): Promise<boolean> {
-    return await this.findAlbum(albumId) != undefined;
+    return await this.findAlbum(albumId, true) !== undefined;
     // return this.albums.some(({ id }) => albumId === id);
   }
 
