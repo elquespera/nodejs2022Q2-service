@@ -57,8 +57,8 @@ export class AlbumService {
   async delete(id: string) {
     await this.findOne(id);
     await this.albumRepository.delete(id); 
-    this.favService.deleteAlbum(id, true);
-    this.trackService.deleteAlbumRef(id);
+    await this.favService.deleteAlbum(id, true);
+    await this.trackService.deleteAlbumRef(id);
   }
 
   deleteArtistRef(artistId: string) {

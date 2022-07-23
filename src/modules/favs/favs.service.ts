@@ -59,11 +59,11 @@ export class FavService {
 
   async deleteArtist(id: string, silent = false) {
     const artists = await this.favArtistRepository.find();
-    const index = artists.findIndex(artist => artist.artist.id === id )
+    const index = artists.findIndex(artist => artist?.artist.id === id )
     if (index >= 0) {
-      this.favAlbumRepository.delete(index);
+      await this.favArtistRepository.delete(artists[index].id);
     } else {
-      if (!silent) notFound('artist', id);
+      // if (!silent) notFound('artist', id);
     }
   }
 
@@ -80,9 +80,9 @@ export class FavService {
     const albums = await this.favAlbumRepository.find();
     const index = albums.findIndex(album => album.album.id === id )
     if (index >= 0) {
-      this.favAlbumRepository.delete(index);
+      this.favAlbumRepository.delete(albums[index].id);
     } else {
-      if (!silent) notFound('album', id);
+      // if (!silent) notFound('album', id);
     }
   }
 
@@ -99,9 +99,9 @@ export class FavService {
     const tracks = await this.favTrackRepository.find();
     const index = tracks.findIndex(track => track.track.id === id )
     if (index >= 0) {
-      this.favTrackRepository.delete(index);
+      this.favTrackRepository.delete(tracks[index].id);
     } else {
-      if (!silent) notFound('track', id);
+      // if (!silent) notFound('track', id);
     }
   }
 

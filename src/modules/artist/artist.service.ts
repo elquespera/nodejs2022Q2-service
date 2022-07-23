@@ -36,37 +36,19 @@ export class ArtistService {
 
   async contains(artistId: string): Promise<boolean> {
     return await this.findArtist(artistId, true) !== undefined;
-    // return this.artists.some(({ id }) => artistId === id);
   }
-
-  // findIndex(artistId: string): number {
-  //   const index = this.artists.findIndex(({ id }) => artistId === id);
-  //   if (index < 0) notFound('artist', artistId);
-  //   return index;
-  // }
 
   async findOne(id: string): Promise<ArtistEntity> {
     return await this.findArtist(id);
-    // const index = this.findIndex(id);
-    // return this.artists[index];
   }
 
   async findAll() {
     return await this.artistRepository.find();
-    // return this.artists;
   }
 
   async create(dto: ArtistDto): Promise<Artist> {
     const createdArtist  = this.artistRepository.create(dto);    
     return await this.artistRepository.save(createdArtist);
-    // const { name, grammy } = dto;
-    // const newArtist: Artist = {
-    //   id: uuidv4(),
-    //   name,
-    //   grammy,
-    // };
-    // this.artists.push(newArtist);
-    // return newArtist;
   }
 
   async update(artistId: string, dto: ArtistDto): Promise<Artist> {
@@ -75,24 +57,13 @@ export class ArtistService {
     artist.name = name;
     artist.grammy = grammy;
     return await this.artistRepository.save(artist);
-    // const { id } = artist;
-    // const updatedArtist: Artist = {
-    //   id,
-    //   name,
-    //   grammy,
-    // };
-    // this.artists.push(updatedArtist);
-    // return updatedArtist;
   }
 
   async delete(id: string) {
-    // const index = this.findIndex(id);
-
     await this.findOne(id);
     await this.artistRepository.delete(id); 
-    this.favService.deleteArtist(id, true);
+    await this.favService.deleteArtist(id, true);
     this.albumService.deleteArtistRef(id);
     this.trackService.deleteArtistRef(id);
-    // this.artists.splice(index, 1);
   }
 }
