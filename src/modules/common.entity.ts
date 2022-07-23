@@ -5,5 +5,4 @@ export abstract class CommonEntity {
 
   @PrimaryGeneratedColumn('uuid')
   id: string = uuidv4();
-  
 }
