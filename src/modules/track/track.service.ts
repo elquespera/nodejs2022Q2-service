@@ -57,19 +57,23 @@ export class TrackService {
     this.favService.deleteTrack(id, true);
   }
 
-  deleteArtistRef(artistId: string) {
-    // this.tracks.forEach((track, index) => {
-    //   if (track.artistId === artistId) {
-    //     this.tracks[index].artistId = null;
-    //   }
-    // });
+  async deleteArtistRef(artistId: string) {
+    const tracks = await this.findAll();
+    tracks.forEach(track => {
+      if (track.artistId === artistId) {
+        const { name, albumId, duration } = track;
+        this.update(track.id, { name, artistId: null, albumId, duration });
+      }
+    });
   }
 
-  deleteAlbumRef(albumId: string) {
-    // this.tracks.forEach((track, index) => {
-    //   if (track.albumId === albumId) {
-    //     this.tracks[index].albumId = null;
-    //   }
-    // });
+  async deleteAlbumRef(albumId: string) {
+    const tracks = await this.findAll();
+    tracks.forEach(track => {
+      if (track.albumId === albumId) {
+        const { name, artistId, duration } = track;
+        this.update(track.id, { name, artistId, albumId: null, duration });
+      }
+    });
   }
 }
