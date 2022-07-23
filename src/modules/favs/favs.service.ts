@@ -38,13 +38,13 @@ export class FavService {
     ) {}
 
   async findAll(): Promise<FavoritesRepsonse> {
-    const artists = await this.favArtistRepository.find({ loadEagerRelations: true});
-    const albums = await this.favAlbumRepository.find({ loadEagerRelations: true});
-    const tracks = await this.favTrackRepository.find({ loadEagerRelations: true});
+    const artists = await this.favArtistRepository.find();
+    const albums = await this.favAlbumRepository.find();
+    const tracks = await this.favTrackRepository.find();
     return {
-      artists: artists.map(artist => artist.artist),
-      albums: albums.map(album => album.album),
-      tracks: tracks.map(track => track.track),
+      artists: artists ? artists.map(artist => artist.artist) : [],
+      albums: albums ? albums.map(album => album.album) : [],
+      tracks: tracks ? tracks.map(track => track.track) : [],
     };
   }
 
@@ -63,7 +63,7 @@ export class FavService {
     if (index >= 0) {
       await this.favArtistRepository.delete(artists[index].id);
     } else {
-      // if (!silent) notFound('artist', id);
+      if (!silent) notFound('artist', id);
     }
   }
 
@@ -82,7 +82,7 @@ export class FavService {
     if (index >= 0) {
       this.favAlbumRepository.delete(albums[index].id);
     } else {
-      // if (!silent) notFound('album', id);
+      if (!silent) notFound('album', id);
     }
   }
 
@@ -99,9 +99,9 @@ export class FavService {
     const tracks = await this.favTrackRepository.find();
     const index = tracks.findIndex(track => track.track.id === id )
     if (index >= 0) {
-      this.favTrackRepository.delete(tracks[index].id);
+      await this.favTrackRepository.delete(tracks[index].id);
     } else {
-      // if (!silent) notFound('track', id);
+      if (!silent) notFound('track', id);
     }
   }
 

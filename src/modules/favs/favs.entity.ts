@@ -10,7 +10,6 @@ class FavoritesEntity {
 
 @Entity('favorite-artists')
 export class FavoriteArtistsEntity extends FavoritesEntity {
-  
   @OneToOne(() => ArtistEntity, { eager: true })
   @JoinColumn()
   artist: ArtistEntity;
@@ -28,5 +27,4 @@ export class FavoriteTracksEntity extends FavoritesEntity {
   @OneToOne(() => TrackEntity, { eager: true })
   @JoinColumn()
   track: TrackEntity;
-
 }

@@ -53,26 +53,26 @@ export class TrackService {
 
   async delete(id: string) {
     await this.findOne(id);
+    await this.favService.deleteTrack(id, true);
     await this.trackRepository.delete(id); 
-    this.favService.deleteTrack(id, true);
   }
 
   async deleteArtistRef(artistId: string) {
     const tracks = await this.findAll();
-    tracks.forEach(track => {
+    tracks.forEach(async track => {
       if (track.artistId === artistId) {
         const { name, albumId, duration } = track;
-        this.update(track.id, { name, artistId: null, albumId, duration });
+        await this.update(track.id, { name, artistId: null, albumId, duration });
       }
     });
   }
 
   async deleteAlbumRef(albumId: string) {
     const tracks = await this.findAll();
-    tracks.forEach(track => {
+    tracks.forEach(async track => {
       if (track.albumId === albumId) {
         const { name, artistId, duration } = track;
-        this.update(track.id, { name, artistId, albumId: null, duration });
+        await this.update(track.id, { name, artistId, albumId: null, duration });
       }
     });
   }
