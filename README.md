@@ -9,7 +9,7 @@
 
 ```
 git clone https://github.com/elquespera/nodejs2022Q2-service.git
-cd nodejs2022Q2
+cd nodejs2022Q2-service
 ```
 
 ## Checkout `database` branch
