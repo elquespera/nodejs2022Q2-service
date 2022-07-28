@@ -5,10 +5,11 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Download
+## Clone the repository & change into project directory
 
 ```
 git clone https://github.com/elquespera/nodejs2022Q2-service.git
+cd nodejs2022Q2
 ```
 
 ## Checkout `database` branch
@@ -17,7 +18,7 @@ git clone https://github.com/elquespera/nodejs2022Q2-service.git
 git checkout database
 ```
 
-## Rename .env.example to .env
+## Rename `.env.example` to `.env`
 
 ```
 mv .env.example .env
