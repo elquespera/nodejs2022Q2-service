@@ -1,7 +1,9 @@
-import { DataSourceOptions } from 'typeorm';
-import { join as joinPath } from 'path';
+import { DataSourceOptions } from "typeorm";
+import { join } from 'path';
+import 'dotenv/config';
+import 'dotenv';
 
-const ormConfig = {
+export const ormConfig = {
   type: 'postgres',
   host: process.env.DB_HOST || 'db',
   port: parseInt(process.env.DB_PORT as string) || 5432,
@@ -9,13 +11,10 @@ const ormConfig = {
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'musicify',
   entities: [
-    joinPath(__dirname, 'modules', '**', '*.entity.js'), 
-    joinPath(__dirname, 'modules', '**', '*.entity.ts')
+    join(__dirname, 'modules', '**', '*.entity.{js,ts}'),
   ],
-  synchronize: true,
+  synchronize: false,
   logging: true,
 } as DataSourceOptions;
 
 console.log(ormConfig);
-
-export { ormConfig };

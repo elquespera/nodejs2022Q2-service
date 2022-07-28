@@ -8,4 +8,6 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
+ENTRYPOINT [ "npm", "run", "start:migrate" ]
+
 USER node
