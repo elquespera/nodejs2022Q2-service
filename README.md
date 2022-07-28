@@ -8,7 +8,7 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/elquespera/nodejs2022Q2-service.git
 ```
 
 ## Installing NPM modules
@@ -43,13 +43,13 @@ To run only one of all test suites
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
+To run all test with authorization (not implemented yet)
 
 ```
 npm run test:auth
 ```
 
-To run only specific test suite with authorization
+To run only specific test suite with authorization (not implemented yet)
 
 ```
 npm run test:auth -- <path to suite>
