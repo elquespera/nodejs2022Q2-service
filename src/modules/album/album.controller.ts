@@ -18,17 +18,17 @@ export class AlbumController {
 
   @Get()
   async getAll(): Promise<any[]> {
-    return this.albumService.findAll();
+    return await this.albumService.findAll();
   }
 
   @Get(':id')
   async getOne(@Param() params: UUIDParams): Promise<any> {
-    return this.albumService.findOne(params.id);
+    return await this.albumService.findOne(params.id);
   }
 
   @Post()
   async create(@Body() albumDto: AlbumDto): Promise<any> {
-    return this.albumService.create(albumDto);
+    return await this.albumService.create(albumDto);
   }
 
   @Put(':id')
@@ -36,12 +36,12 @@ export class AlbumController {
     @Param() params: UUIDParams,
     @Body() albumDto: AlbumDto,
   ): Promise<any> {
-    return this.albumService.update(params.id, albumDto);
+    return await this.albumService.update(params.id, albumDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param() params: UUIDParams): Promise<any> {
-    return this.albumService.delete(params.id);
+    return await this.albumService.delete(params.id);
   }
 }

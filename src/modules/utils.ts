@@ -6,7 +6,7 @@ import {
 
 export const notFound = (what: string, id: string) => {
   throw new NotFoundException(
-    `The ${what} with the id of "${id}" was not found`,
+    `The ${what} with the id of '${id}' was not found`,
   );
 };
 
