@@ -6,9 +6,16 @@ import { ArtistModule } from './modules/artist/artist.module';
 import { FavModule } from './modules/favs/favs.module';
 import { TrackModule } from './modules/track/track.module';
 import { UserModule } from './modules/user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ormConfig } from './typeorm.config';
 
 @Module({
-  imports: [UserModule, ArtistModule, AlbumModule, TrackModule, FavModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(ormConfig),
+    UserModule, ArtistModule, AlbumModule, TrackModule, FavModule, 
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
