@@ -7,33 +7,33 @@
 
 ## Clone the repository & change into project directory
 
-```
+```bash
 git clone https://github.com/elquespera/nodejs2022Q2-service.git
 cd nodejs2022Q2-service
 ```
 
 ## Checkout `database` branch
 
-```
+```bash
 git checkout database
 ```
 
 ## Rename `.env.example` to `.env`
 
-```
+```bash
 mv .env.example .env
 ```
 
 
 ## Installing NPM modules
 
-```
+```bash
 npm install
 ```
 
 ## Build & start app and database containers with `docker-compose`
 
-```
+```bash
 docker-compose up --build
 ```
 
@@ -47,22 +47,22 @@ After thie app has started in `docker`, open new terminal and enter:
 
 To run all tests
 
-```
+```bash
 npm run test
 ```
 
 To run only one of all test suites
 
-```
+```bash
 npm run test -- <path to suite>
 ```
 
 ### Auto-fix and format
 
-```
+```bash
 npm run lint
 ```
 
-```
+```bash
 npm run format
 ```
