@@ -14,5 +14,3 @@ export const ormConfig = {
   synchronize: false,
   logging: true,
 } as DataSourceOptions;
-
-console.log(ormConfig);
