@@ -1,1 +1,3 @@
 FROM postgres:13-alpine
+
+ENTRYPOINT ["postgres", "-c", "max_connections=1000", "-c", "logging_collector=on", "-c", "log_statement=mod"]

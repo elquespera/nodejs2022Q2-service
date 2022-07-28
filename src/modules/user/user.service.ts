@@ -10,7 +10,7 @@ import { UserEntity } from './user.entity';
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async findUser(id: string): Promise<UserEntity> {
@@ -21,16 +21,16 @@ export class UserService {
 
   async findOne(userId: string): Promise<UserDto> {
     const user = await this.findUser(userId);
-    return user.format(); 
+    return user.format();
   }
 
   async findAll() {
     const users = await this.userRepository.find();
-    return users.map(user => user.format());
+    return users.map((user) => user.format());
   }
 
   async create(dto: CreateUserDto): Promise<UserDto> {
-    const createdUser  = this.userRepository.create(dto);    
+    const createdUser = this.userRepository.create(dto);
     const savedUser = await this.userRepository.save(createdUser);
     return savedUser.format();
   }

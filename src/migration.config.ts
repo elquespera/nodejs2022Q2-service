@@ -1,5 +1,5 @@
-import { DataSource } from "typeorm";
-import { ormConfig } from "./typeorm.config";
+import { DataSource } from 'typeorm';
+import { ormConfig } from './typeorm.config';
 
 const dataSource = new DataSource({
   ...ormConfig,
@@ -9,4 +9,4 @@ const dataSource = new DataSource({
   // },
 });
 dataSource.initialize();
-export default dataSource; 
+export default dataSource;

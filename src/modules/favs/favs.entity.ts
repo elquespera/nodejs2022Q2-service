@@ -1,11 +1,11 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { AlbumEntity } from "../album/album.entity";
-import { ArtistEntity } from "../artist/artist.entity";
-import { TrackEntity } from "../track/track.entity";
+import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AlbumEntity } from '../album/album.entity';
+import { ArtistEntity } from '../artist/artist.entity';
+import { TrackEntity } from '../track/track.entity';
 
 class FavoritesEntity {
   @PrimaryGeneratedColumn('rowid')
-  id: number
+  id: number;
 }
 
 @Entity('favorite-artists')

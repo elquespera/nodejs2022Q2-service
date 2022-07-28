@@ -1,5 +1,5 @@
-import { Column, Entity } from "typeorm";
-import { CommonEntity } from "../common.entity";
+import { Column, Entity } from 'typeorm';
+import { CommonEntity } from '../common.entity';
 
 @Entity('track')
 export class TrackEntity extends CommonEntity {
@@ -12,6 +12,6 @@ export class TrackEntity extends CommonEntity {
   @Column({ nullable: true })
   albumId: string | null; // refers to Album
 
-  @Column({ type: 'int'})
+  @Column({ type: 'int' })
   duration: number; // integer number
 }

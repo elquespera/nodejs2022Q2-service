@@ -4,7 +4,11 @@ import { AlbumModule } from '../album/album.module';
 import { ArtistModule } from '../artist/artist.module';
 import { TrackModule } from '../track/track.module';
 import { FavController } from './favs.controller';
-import { FavoriteArtistsEntity, FavoriteAlbumsEntity, FavoriteTracksEntity } from './favs.entity';
+import {
+  FavoriteArtistsEntity,
+  FavoriteAlbumsEntity,
+  FavoriteTracksEntity,
+} from './favs.entity';
 import { FavService } from './favs.service';
 
 @Module({

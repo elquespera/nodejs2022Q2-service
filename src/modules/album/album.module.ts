@@ -8,7 +8,7 @@ import { AlbumService } from './album.service';
 
 @Module({
   imports: [
-    forwardRef(() => FavModule), 
+    forwardRef(() => FavModule),
     forwardRef(() => TrackModule),
     TypeOrmModule.forFeature([AlbumEntity]),
   ],

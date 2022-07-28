@@ -16,7 +16,6 @@ services:
       - .:/usr/src/app
     ports:
       - "${PORT}:${PORT}"
-    command: npm run start:migrate
     depends_on:
       - db
     links:
@@ -37,7 +36,6 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - ./db-data:/var/lib/postgresql/data:z
-    command: postgres -c 'max_connections=1000' '-c' 'logging_collector=on' '-c' 'log_statement=mod'
 
 volumes:
   db-data: 

@@ -30,5 +30,4 @@ async function bootstrap() {
   console.log(`🚀 Server has started on http://localhost:${port}`);
 }
 
-
 bootstrap();

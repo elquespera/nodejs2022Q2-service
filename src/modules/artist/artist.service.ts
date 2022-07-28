@@ -27,15 +27,17 @@ export class ArtistService {
     private artistRepository: Repository<ArtistEntity>,
   ) {}
 
-  async findArtist(artistId: string, silent: boolean = false): Promise<ArtistEntity> {
-    const artist = await this.artistRepository.findOne({ where: { id: artistId } });
+  async findArtist(artistId: string, silent = false): Promise<ArtistEntity> {
+    const artist = await this.artistRepository.findOne({
+      where: { id: artistId },
+    });
     if (artist) return artist;
     if (!silent) notFound('artist', artistId);
     return undefined;
   }
 
   async contains(artistId: string): Promise<boolean> {
-    return await this.findArtist(artistId, true) !== undefined;
+    return (await this.findArtist(artistId, true)) !== undefined;
   }
 
   async findOne(id: string): Promise<ArtistEntity> {
@@ -47,7 +49,7 @@ export class ArtistService {
   }
 
   async create(dto: ArtistDto): Promise<Artist> {
-    const createdArtist  = this.artistRepository.create(dto);    
+    const createdArtist = this.artistRepository.create(dto);
     return await this.artistRepository.save(createdArtist);
   }
 
@@ -64,6 +66,6 @@ export class ArtistService {
     await this.favService.deleteArtist(id, true);
     await this.albumService.deleteArtistRef(id);
     await this.trackService.deleteArtistRef(id);
-    await this.artistRepository.delete(id); 
+    await this.artistRepository.delete(id);
   }
 }

@@ -1,4 +1,4 @@
-import { DataSourceOptions } from "typeorm";
+import { DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import 'dotenv/config';
 import 'dotenv';
@@ -10,9 +10,7 @@ export const ormConfig = {
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'musicify',
-  entities: [
-    join(__dirname, 'modules', '**', '*.entity.{js,ts}'),
-  ],
+  entities: [join(__dirname, 'modules', '**', '*.entity.{js,ts}')],
   synchronize: false,
   logging: true,
 } as DataSourceOptions;

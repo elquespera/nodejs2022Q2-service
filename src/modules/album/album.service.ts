@@ -9,27 +9,28 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumService {
-
   constructor(
     @Inject(forwardRef(() => FavService))
     private favService: FavService,
 
     @Inject(forwardRef(() => TrackService))
-    private trackService: TrackService, 
+    private trackService: TrackService,
 
     @InjectRepository(AlbumEntity)
     private albumRepository: Repository<AlbumEntity>,
   ) {}
 
-  async findAlbum(albumId: string, silent: boolean = false): Promise<AlbumEntity> {
-    const album = await this.albumRepository.findOne({ where: { id: albumId } });
+  async findAlbum(albumId: string, silent = false): Promise<AlbumEntity> {
+    const album = await this.albumRepository.findOne({
+      where: { id: albumId },
+    });
     if (album) return album;
     if (!silent) notFound('album', albumId);
     return undefined;
   }
 
   async contains(albumId: string): Promise<boolean> {
-    return await this.findAlbum(albumId, true) !== undefined;
+    return (await this.findAlbum(albumId, true)) !== undefined;
   }
 
   async findOne(id: string): Promise<AlbumEntity> {
@@ -41,7 +42,7 @@ export class AlbumService {
   }
 
   async create(dto: AlbumDto): Promise<AlbumEntity> {
-    const createdAlbum  = this.albumRepository.create(dto);    
+    const createdAlbum = this.albumRepository.create(dto);
     return await this.albumRepository.save(createdAlbum);
   }
 
@@ -58,12 +59,12 @@ export class AlbumService {
     await this.findOne(id);
     await this.trackService.deleteAlbumRef(id);
     await this.favService.deleteAlbum(id, true);
-    await this.albumRepository.delete(id); 
+    await this.albumRepository.delete(id);
   }
 
   async deleteArtistRef(artistId: string) {
     const albums = await this.findAll();
-    albums.forEach(async album => {
+    albums.forEach(async (album) => {
       if (album.artistId === artistId) {
         const { name, year } = album;
         await this.update(album.id, { name, artistId: null, year });

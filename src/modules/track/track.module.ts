@@ -8,7 +8,7 @@ import { TrackService } from './track.service';
 @Module({
   imports: [
     forwardRef(() => FavModule),
-    TypeOrmModule.forFeature([TrackEntity])
+    TypeOrmModule.forFeature([TrackEntity]),
   ],
   controllers: [TrackController],
   providers: [TrackService],
