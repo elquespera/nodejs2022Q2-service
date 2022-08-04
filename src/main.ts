@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { SwaggerModule } from '@nestjs/swagger';
 import { parse as parseYaml } from 'yaml';
-import { join as joinPath } from 'path';
+import { resolve } from 'path';
 
 import { ValidationPipe } from '@nestjs/common';
 import { readFile } from 'fs/promises';
@@ -12,16 +12,16 @@ async function bootstrap() {
 
   try {
     const apiDocFile = await readFile(
-      joinPath(__dirname, '..', 'doc', 'api.yaml'),
+      resolve(__dirname, '..', 'doc', 'api.yaml'),
       'utf-8',
     );
     const apiDoc = parseYaml(apiDocFile);
     SwaggerModule.setup('doc', app, apiDoc);
   } catch (error) {
-    console.error(error);
+     console.error(error);
   }
 
-  app.useGlobalPipes(
+  app.useGlobalPipes( 
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 

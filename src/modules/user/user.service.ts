@@ -31,7 +31,7 @@ export class UserService {
 
   async create(dto: CreateUserDto): Promise<UserDto> {
     const createdUser = this.userRepository.create(dto);
-    const savedUser = await this.userRepository.save(createdUser);
+    const savedUser = await this.userRepository.save(createdUser); 
     return savedUser.format();
   }
 
