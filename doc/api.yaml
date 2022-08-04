@@ -186,6 +186,8 @@ paths:
                   token:
                     type: string
                 description: JWT Token
+        400:
+          description: Bad request                
         403:
           description: Incorrect login or password
 

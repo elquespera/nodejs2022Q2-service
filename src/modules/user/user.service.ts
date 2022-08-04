@@ -24,6 +24,11 @@ export class UserService {
     return user.format();
   }
 
+  async match(dto: CreateUserDto): Promise<UserEntity> {
+    const users = await this.userRepository.find();
+    return users.find(({ login, password }) => login === dto.login && password === dto.password);
+  }
+
   async findAll() {
     const users = await this.userRepository.find();
     return users.map((user) => user.format());
