@@ -41,3 +41,6 @@ lerna-debug.log*
 /db-data
 
 PR*.md
+
+/crosscheck*
+/src/migrations/
