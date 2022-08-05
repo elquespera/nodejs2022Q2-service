@@ -1,7 +1,7 @@
 export const jwtConstants = {
   access_key: process.env.JWT_SECRET_KEY || 'jwt-secret',
-  access_expiry: 300,
+  access_expiry: process.env.TOKEN_EXPIRE_TIME || '1h',
 
   refresh_key: process.env.JWT_SECRET_REFRESH_KEY || 'jwt-refresh-secret',
-  refresh_expiry: 600,
+  refresh_expiry: process.env.TOKEN_REFRESH_EXPIRE_TIME || '24h',
 };
