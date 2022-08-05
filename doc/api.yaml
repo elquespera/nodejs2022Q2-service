@@ -147,7 +147,17 @@ paths:
                 - password
       responses:
         201:
-          description: Successful signup
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
         400:
           description: Bad request
 
@@ -183,13 +193,52 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  accessToken:
                     type: string
-                description: JWT Token
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
         400:
           description: Bad request                
         403:
           description: Incorrect login or password
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      security: []
+      summary: Login
+      description: Refreshes Access & Refresh JWT-tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token
+              required:
+                - refreshToken
+      responses:
+        200:
+          description: Successful token refresh.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
+        400:
+          description: Bad request                
+        403:
+          description: Incorrect, invalid or missing refresh token        
 
   /user:
     get:
