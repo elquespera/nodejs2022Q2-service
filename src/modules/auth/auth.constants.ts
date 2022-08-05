@@ -4,4 +4,4 @@ export const jwtConstants = {
 
   refresh_key: process.env.JWT_SECRET_REFRESH_KEY || 'jwt-refresh-secret',
   refresh_expiry: 600,
-}
+};

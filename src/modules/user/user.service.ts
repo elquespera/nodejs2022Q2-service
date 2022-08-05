@@ -30,11 +30,15 @@ export class UserService {
   }
 
   async match(dto: CreateUserDto): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { login: dto.login } });
+    const user = await this.userRepository.findOne({
+      where: { login: dto.login },
+    });
     if (user) {
-      const doPasswordsMatch = await bcrypt.compare(dto.password, user.password);
-      if (doPasswordsMatch)
-        return user;
+      const doPasswordsMatch = await bcrypt.compare(
+        dto.password,
+        user.password,
+      );
+      if (doPasswordsMatch) return user;
     }
   }
 
@@ -45,16 +49,21 @@ export class UserService {
 
   async create(dto: CreateUserDto): Promise<UserDto> {
     const passwordHash = await this.hash(dto.password);
-    const createdUser = this.userRepository.create({ login: dto.login, password: passwordHash });
-    const savedUser = await this.userRepository.save(createdUser); 
+    const createdUser = this.userRepository.create({
+      login: dto.login,
+      password: passwordHash,
+    });
+    const savedUser = await this.userRepository.save(createdUser);
     return savedUser.format();
   }
 
   async update(userId: string, updateDto: UpdatePasswordDto): Promise<UserDto> {
     const updatedUser = await this.findUser(userId);
-    const doPasswordsMatch = await bcrypt.compare(updateDto.oldPassword, updatedUser.password);
-    if (!doPasswordsMatch)
-      forbidden(`The old password does not match`);
+    const doPasswordsMatch = await bcrypt.compare(
+      updateDto.oldPassword,
+      updatedUser.password,
+    );
+    if (!doPasswordsMatch) forbidden(`The old password does not match`);
 
     updatedUser.password = await this.hash(updateDto.newPassword);
     updatedUser.version += 1;

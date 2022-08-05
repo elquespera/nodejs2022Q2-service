@@ -4,9 +4,6 @@ import {
   HttpCode,
   Post,
   UnauthorizedException,
-  UseGuards,
-  ValidationPipe,
-    
 } from '@nestjs/common';
 import { CreateUserDto } from '../user/user.dto';
 import { AuthService } from './auth.service';
@@ -30,16 +27,13 @@ export class AuthController {
     return await this.authService.login(userDto);
   }
 
-
   @Public()
   @Post('refresh')
   @HttpCode(200)
   async refresh(@Body() dto: UpdateRefreshTokenDto): Promise<JwtTokens> {
-    // Validation "by hand" because of global validation pipe and
-    // a need to return 401 instead of 400
-    if (!dto.refreshToken) { 
+    if (!dto.refreshToken) {
       throw new UnauthorizedException('Refresh Token is missing');
     }
     return await this.authService.refresh(dto.refreshToken);
-  }  
+  }
 }

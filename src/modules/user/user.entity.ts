@@ -22,7 +22,7 @@ export class UserEntity extends CommonEntity {
   updatedAt: string = this.timestamp;
 
   @Column({ nullable: true })
-  refreshHash?: string
+  refreshHash?: string;
 
   format(): UserDto {
     const { id, login, version, createdAt, updatedAt } = this;

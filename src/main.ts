@@ -18,10 +18,10 @@ async function bootstrap() {
     const apiDoc = parseYaml(apiDocFile);
     SwaggerModule.setup('doc', app, apiDoc);
   } catch (error) {
-     console.error(error);
+    console.error(error);
   }
 
-  app.useGlobalPipes( 
+  app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 

@@ -7,10 +7,7 @@ import { AccessJwtStrategy } from './jwt-strategies/access-jwt.strategy';
 import { RefreshJwtStrategy } from './jwt-strategies/refresh-jwt.strategy';
 
 @Module({
-  imports: [
-    forwardRef(() => UserModule),
-    JwtModule.register({})
-  ],
+  imports: [forwardRef(() => UserModule), JwtModule.register({})],
   providers: [AuthService, AccessJwtStrategy, RefreshJwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
