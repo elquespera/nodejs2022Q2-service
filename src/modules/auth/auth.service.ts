@@ -4,7 +4,7 @@ import { CreateUserDto, UserDto } from 'src/modules/user/user.dto';
 import { UserService } from 'src/modules/user/user.service';
 import { forbidden } from '../utils';
 import { jwtConstants } from './auth.constants';
-import { JwtTokens } from './auth.types';
+import { JwtTokens, TokenPayload } from './auth.types';
 
 
 @Injectable()
@@ -42,5 +42,16 @@ export class AuthService {
     await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
-  
+
+  async refresh(refreshToken: string): Promise<JwtTokens> {
+    const payload = this.jwtService.decode(refreshToken) as TokenPayload;
+    if (!payload) forbidden();
+    const isValid = await this.jwtService.verifyAsync(refreshToken, { secret: jwtConstants.refresh_key });
+    if (!isValid) forbidden();
+
+    const user = await this.userService.findOne(payload.userId);
+    const tokens = await this.signUser(user.id, user.login);
+    await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
+  }
 }
