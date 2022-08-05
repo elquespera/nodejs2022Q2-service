@@ -27,7 +27,6 @@ export class AuthController {
     return await this.authService.login(userDto);
   }
 
-  @Public()
   @Post('refresh')
   @HttpCode(200)
   async refresh(@Body() dto: UpdateRefreshTokenDto): Promise<JwtTokens> {

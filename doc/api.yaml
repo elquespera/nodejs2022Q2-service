@@ -206,7 +206,6 @@ paths:
     post:
       tags:
         - Auth
-      security: []
       summary: Login
       description: Refreshes Access & Refresh JWT-tokens
       requestBody:

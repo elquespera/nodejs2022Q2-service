@@ -51,7 +51,11 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string): Promise<JwtTokens> {
-    const payload = this.jwtService.decode(refreshToken) as TokenPayload;
+    let payload;
+    try {
+      payload = this.jwtService.decode(refreshToken) as TokenPayload;
+    } catch {};
+    
     if (!payload) forbidden();
     const isValid = await this.jwtService.verifyAsync(refreshToken, {
       secret: jwtConstants.refresh_key,
