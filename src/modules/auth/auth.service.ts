@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto, UserDto } from 'src/modules/user/user.dto';
 import { UserService } from 'src/modules/user/user.service';
 import { forbidden } from '../utils';
+import { JwtTokens } from './auth.types';
 
 
 @Injectable()
@@ -14,8 +15,12 @@ export class AuthService {
     private userService: UserService,    
   ) {}
   
-  async signup(dto: CreateUserDto): Promise<UserDto> {
-    return this.userService.create(dto);
+  async signup(dto: CreateUserDto): Promise<JwtTokens> {
+    const user = await this.userService.create(dto);
+    return {
+      access: '',
+      refresh: '',
+    }
   }
 
   async login(dto: CreateUserDto): Promise<any> {
