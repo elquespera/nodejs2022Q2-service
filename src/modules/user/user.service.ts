@@ -15,7 +15,7 @@ export class UserService {
   ) {}
 
   private hash(data: string) {
-    return bcrypt.hash(data, 10);
+    return bcrypt.hash(data, parseInt(process.env.CRYPT_SALT) || 10);
   }
 
   async findUser(id: string): Promise<UserEntity> {
