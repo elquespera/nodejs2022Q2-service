@@ -30,8 +30,12 @@ export class UserService {
   }
 
   async match(dto: CreateUserDto): Promise<UserEntity> {
-    const users = await this.userRepository.find();
-    return users.find(async ({ login, password }) => login === dto.login && await bcrypt.compare(password, dto.password));
+    const user = await this.userRepository.findOne({ where: { login: dto.login } });
+    if (user) {
+      const doPasswordsMatch = await bcrypt.compare(dto.password, user.password);
+      if (doPasswordsMatch)
+        return user;
+    }
   }
 
   async findAll() {
@@ -58,6 +62,12 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(updatedUser);
     return savedUser.format();
+  }
+
+  async updateRefreshToken(userId: string, refreshToken: string) {
+    const user = await this.findUser(userId);
+    user.refreshHash = await this.hash(refreshToken);
+    return await this.userRepository.save(user);
   }
 
   async delete(id: string) {
