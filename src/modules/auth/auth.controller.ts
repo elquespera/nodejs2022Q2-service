@@ -3,6 +3,8 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
+    
 } from '@nestjs/common';
 import { CreateUserDto } from '../user/user.dto';
 import { AuthService } from './auth.service';
@@ -24,4 +26,12 @@ export class AuthController {
   async login(@Body() userDto: CreateUserDto): Promise<any> {
     return await this.authService.login(userDto);
   }
+
+  // @UseGuards(AuthGuard('jwt-refresh'))
+  @Public()
+  @Post('/refresh')
+  @HttpCode(200)
+  refresh( ) {
+
+  }  
 }

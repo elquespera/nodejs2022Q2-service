@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signUser(userId: string, login: string): Promise<JwtTokens> {
-    const [access, refresh] = await Promise.all([
+    const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { userId, login }, 
         { secret: jwtConstants.access_key,  expiresIn: jwtConstants.access_expiry }),
@@ -25,24 +25,22 @@ export class AuthService {
         { userId, login }, 
         { secret: jwtConstants.refresh_key, expiresIn: jwtConstants.refresh_expiry }),
     ]);
-    return { access, refresh };
+    return { accessToken, refreshToken };
   }
   
   async signup(dto: CreateUserDto): Promise<JwtTokens> {
     const user = await this.userService.create(dto);
-    return {
-      access: '',
-      refresh: '',
-    }
+    const tokens = await this.signUser(user.id, user.login);
+    await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
   }
 
-  async login(dto: CreateUserDto): Promise<any> {
+  async login(dto: CreateUserDto): Promise<JwtTokens> {
     const user = await this.userService.match(dto);
     if (!user) forbidden('Invalid login or password');
-    const payload = { userId: user.id, login: user.login };
-    return {
-      access_token: this.jwtService.sign(payload),
-    }
+    const tokens = await this.signUser(user.id, user.login);
+    await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
   }
   
 }

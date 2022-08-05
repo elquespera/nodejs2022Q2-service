@@ -21,6 +21,9 @@ export class UserEntity extends CommonEntity {
   @Column({ type: 'bigint' })
   updatedAt: string = this.timestamp;
 
+  @Column({ nullable: true })
+  refreshHash?: string
+
   format(): UserDto {
     const { id, login, version, createdAt, updatedAt } = this;
     return {
