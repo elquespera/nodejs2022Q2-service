@@ -8,12 +8,10 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     forwardRef(() => UserModule),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'mysecret',
-      signOptions: { expiresIn: '60s' }
-    })
+    JwtModule.register({})
   ],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy]
+  exports: [AuthService],
 })
 export class AuthModule {}

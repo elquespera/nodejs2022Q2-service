@@ -20,8 +20,11 @@ export class AuthService {
 
   async login(dto: CreateUserDto): Promise<any> {
     const user = await this.userService.match(dto);
-
-    return user ? user.format() : forbidden('Invalid login or password');
+    if (!user) forbidden('Invalid login or password');
+    const payload = { userId: user.id, login: user.login };
+    return {
+      access_token: this.jwtService.sign(payload),
+    }
   }
   
 }
