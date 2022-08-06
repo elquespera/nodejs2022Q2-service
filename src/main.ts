@@ -6,9 +6,10 @@ import { resolve } from 'path';
 
 import { ValidationPipe } from '@nestjs/common';
 import { readFile } from 'fs/promises';
+import { LoggingService } from './modules/logger/logger.service.js';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   try {
     const apiDocFile = await readFile(
@@ -25,7 +26,9 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
-  const port = process.env.PORT || 4000;
+  app.useLogger(app.get(LoggingService));
+
+  const port = process.env.PORT || 4000;  
   await app.listen(port);
   console.log(`🚀 Server has started on http://localhost:${port}`);
 }
