@@ -12,10 +12,10 @@ git clone https://github.com/elquespera/nodejs2022Q2-service.git
 cd nodejs2022Q2-service
 ```
 
-## Checkout `authentication` branch
+## Checkout `logging` branch
 
 ```bash
-git checkout authentication
+git checkout logging
 ```
 
 ## Rename `.env.example` to `.env`
