@@ -117,6 +117,128 @@ security:
   - bearerAuth: []
 
 paths:
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      security: [ ]
+      summary: Signup
+      description: Signup a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                login:
+                  type: string
+                  minLength: 3
+                  maxLength: 255
+                  description: Username
+                password:
+                  type: string
+                  format: password
+                  pattern: ^[a-zA-Z0-9]{3,30}
+                  description: Password
+              required:
+                - login
+                - password
+      responses:
+        201:
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
+        400:
+          description: Bad request
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      security: []
+      summary: Login
+      description: Logins a user and returns a JWT-token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                login:
+                  type: string
+                  description: Username
+                password:
+                  type: string
+                  description: Password
+              required:
+                - user
+                - login
+      responses:
+        200:
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
+        400:
+          description: Bad request                
+        403:
+          description: Incorrect login or password
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Refreshes Access & Refresh JWT-tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token
+              required:
+                - refreshToken
+      responses:
+        200:
+          description: Successful token refresh.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                description: Access & Refresh JWT Tokens
+        400:
+          description: Bad request                
+        403:
+          description: Incorrect, invalid or missing refresh token        
+
   /user:
     get:
       tags:
