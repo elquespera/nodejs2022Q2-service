@@ -29,15 +29,15 @@ async function bootstrap() {
   const logger = app.get(LoggingService);
   app.useLogger(logger);
 
-  process.on("unhandledRejection", async (error, origin) => {
+  process.on('unhandledRejection', async (error, origin) => {
     await logger.error(`unhandledRejection: ${error}, origin: ${origin}`);
   });
 
-  process.on("uncaughtException", async (error, origin) => {
+  process.on('uncaughtException', async (error, origin) => {
     await logger.error(`uncaughtException: ${error}, origin: ${origin}`);
   });
 
-  const port = process.env.PORT || 4000;  
+  const port = process.env.PORT || 4000;
   await app.listen(port);
   console.log(`🚀 Server has started on http://localhost:${port}`);
 }

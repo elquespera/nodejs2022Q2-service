@@ -3,7 +3,6 @@ import * as fs from 'fs/promises';
 import * as os from 'os';
 import { resolve, dirname } from 'path';
 
-
 enum LoggingLevels {
   LOG,
   ERROR,
@@ -35,23 +34,25 @@ export class LoggingService extends ConsoleLogger {
         if (stats.size < this.logFileSize) {
           break;
         }
-      }
-      catch(e) {
+      } catch (e) {
         if (e.code === 'ENOENT') break;
       }
     } while (counter < 1000);
- 
+
     try {
       await fs.mkdir(dirname(fn), { recursive: true });
-    } catch(e) {};
+    } catch (e) {}
 
-    try {      
+    try {
       const date = new Date();
       const levelString = LoggingLevels[level].padStart(7);
-      await fs.appendFile(fn, `${date.toLocaleString()} ${levelString} [${this.context}] ${message} ${os.EOL}`);
-    }
-    catch(e) {
-    }
+      await fs.appendFile(
+        fn,
+        `${date.toLocaleString()} ${levelString} [${this.context}] ${message} ${
+          os.EOL
+        }`,
+      );
+    } catch (e) {}
   }
 
   async log(message: any) {
