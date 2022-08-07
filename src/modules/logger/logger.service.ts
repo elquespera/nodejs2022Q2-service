@@ -24,7 +24,7 @@ export class LoggingService extends ConsoleLogger {
   private async logToFile(message: string, level: LoggingLevels) {
     let fileName = this.logFileName;
     if (level === LoggingLevels.ERROR) fileName = this.errorFileName;
-    const dir = resolve(__dirname, '..', '..', '..', 'src', 'logs');
+    const dir = resolve(__dirname, '..', '..', '..', 'logs');
     let counter = 0;
     let fn: string;
     do {
