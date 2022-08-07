@@ -1,4 +1,8 @@
 import { ConsoleLogger, Injectable } from '@nestjs/common';
+import * as fs from 'fs/promises';
+import * as os from 'os';
+import { resolve, dirname } from 'path';
+
 
 enum LoggingLevels {
   LOG,
@@ -10,30 +14,78 @@ enum LoggingLevels {
 
 @Injectable()
 export class LoggingService extends ConsoleLogger {
-  private loggingLevel = process.env.LOGGING_LEVEL || 4;
+  private loggingLevel = parseInt(process.env.LOGGING_LEVEL) || 4;
+  private logFileSize = (parseFloat(process.env.LOG_FILE_SIZE) || 10) * 1024;
 
-  log(message: any, context?: string) {
-    if (this.loggingLevel >= LoggingLevels.LOG)
+  private logFileName = 'log';
+  private errorFileName = 'error';
+  private logFileExtention = 'txt';
+
+  private async logToFile(message: string, level: LoggingLevels) {
+    let fileName = this.logFileName;
+    if (level === LoggingLevels.ERROR) fileName = this.errorFileName;
+    const dir = resolve(__dirname, '..', '..', '..', 'src', 'logs');
+    let counter = 0;
+    let fn: string;
+    do {
+      counter += 1;
+      fn = resolve(dir, `${fileName}${counter}.${this.logFileExtention}`);
+      try {
+        const stats = await fs.stat(fn);
+        if (stats.size < this.logFileSize) {
+          break;
+        }
+      }
+      catch(e) {
+        if (e.code === 'ENOENT') break;
+      }
+    } while (counter < 1000);
+ 
+    try {
+      await fs.mkdir(dirname(fn), { recursive: true });
+    } catch(e) {};
+
+    try {      
+      const date = new Date();
+      const levelString = LoggingLevels[level].padStart(7);
+      await fs.appendFile(fn, `${date.toLocaleString()} ${levelString} [${this.context}] ${message} ${os.EOL}`);
+    }
+    catch(e) {
+    }
+  }
+
+  async log(message: any) {
+    if (this.loggingLevel >= LoggingLevels.LOG) {
+      await this.logToFile(message, LoggingLevels.LOG);
       super.log(message);
+    }
   }
 
-  error(message: any, context?: string) {
-    if (this.loggingLevel >= LoggingLevels.ERROR)
+  async error(message: any) {
+    if (this.loggingLevel >= LoggingLevels.ERROR) {
+      await this.logToFile(message, LoggingLevels.ERROR);
       super.error(message);
+    }
   }
 
-  warn(message: any, context?: string) {
-    if (this.loggingLevel >= LoggingLevels.WARN)
+  async warn(message: any) {
+    if (this.loggingLevel >= LoggingLevels.WARN) {
+      await this.logToFile(message, LoggingLevels.WARN);
       super.warn(message);
+    }
   }
 
-  debug(message: any, context?: string) {
-    if (this.loggingLevel >= LoggingLevels.DEBUG)
+  async debug(message: any) {
+    if (this.loggingLevel >= LoggingLevels.DEBUG) {
+      await this.logToFile(message, LoggingLevels.DEBUG);
       super.debug(message);
+    }
   }
 
-  verbose(message: any, context?: string) {
-    if (this.loggingLevel >= LoggingLevels.VERBOSE)
+  async verbose(message: any) {
+    if (this.loggingLevel >= LoggingLevels.VERBOSE) {
+      await this.logToFile(message, LoggingLevels.VERBOSE);
       super.verbose(message);
+    }
   }
 }
