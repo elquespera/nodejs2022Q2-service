@@ -14,7 +14,11 @@ import { ormConfig } from './typeorm.config';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(ormConfig),
-    UserModule, ArtistModule, AlbumModule, TrackModule, FavModule, 
+    UserModule,
+    ArtistModule,
+    AlbumModule,
+    TrackModule,
+    FavModule,
   ],
   controllers: [AppController],
   providers: [AppService],

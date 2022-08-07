@@ -1,4 +1,4 @@
-FROM node:16.16-alpine3.16 As development
+FROM node:16-alpine As development
 
 WORKDIR /usr/src/app
 
@@ -9,5 +9,7 @@ RUN npm ci
 RUN npm prune
 
 COPY --chown=node:node . .
+
+ENTRYPOINT [ "npm", "run", "start:migrate" ]
 
 USER node

@@ -5,10 +5,13 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
+## Clone the repository & change into project directory
+=======
 ## Download
 
-```
+```bash
 git clone https://github.com/elquespera/nodejs2022Q2-service.git
+cd nodejs2022Q2-service
 ```
 
 ## Checkout `database` branch
@@ -26,13 +29,27 @@ mv .env.example .env
 
 ## Installing NPM modules
 
+```bash
+git checkout database
 ```
+
+## Rename `.env.example` to `.env`
+
+```bash
+mv .env.example .env
+```
+
+## Build & start app and database containers with `docker-compose`
+
+## Installing NPM modules
+
+```bash
 npm install
 ```
 
 ## Build & start app and database containers with `docker-compose`
 
-```
+```bash
 docker-compose up --build
 ```
 
@@ -46,22 +63,22 @@ After thie app has started in `docker`, open new terminal and enter:
 
 To run all tests
 
-```
+```bash
 npm run test
 ```
 
 To run only one of all test suites
 
-```
+```bash
 npm run test -- <path to suite>
 ```
 
 ### Auto-fix and format
 
-```
+```bash
 npm run lint
 ```
 
-```
+```bash
 npm run format
 ```

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './app.module.js';
 import { SwaggerModule } from '@nestjs/swagger';
 import { parse as parseYaml } from 'yaml';
 import { join as joinPath } from 'path';
@@ -29,6 +29,5 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`🚀 Server has started on http://localhost:${port}`);
 }
-
 
 bootstrap();

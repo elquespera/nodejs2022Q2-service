@@ -1,79 +1,56 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UserDto, UpdatePasswordDto } from './user.dto';
-import { User } from './user.interface';
-import { v4 as uuidv4 } from 'uuid';
-import { forbidden, notFound } from '../utils';
-
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+import { CreateUserDto, UserDto, UpdatePasswordDto } from './user.dto';
+import { forbidden, notFound } from '../utils';
 import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {
-  private users: Array<User> = [];
-
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
   ) {}
 
-  private formatUser(index: number): UserDto {
-    const user = this.users[index];
-    if (!user) return undefined;
-    const { id, login, version, createdAt, updatedAt } = user;
-    return { id, login, version, createdAt, updatedAt };
+  async findUser(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    if (!user) notFound('user', id);
+    return user;
   }
 
-  findIndex(userId: string): number {
-    const index = this.users.findIndex(({ id }) => userId === id);
-    if (index < 0) notFound('user', userId);
-    return index;
+  async findOne(userId: string): Promise<UserDto> {
+    const user = await this.findUser(userId);
+    return user.format();
   }
 
-  findOne(userId: string): UserDto {
-    const index = this.findIndex(userId);
-    return this.formatUser(index);
+  async findAll() {
+    const users = await this.userRepository.find();
+    return users.map((user) => user.format());
   }
 
-  findAll(): Array<UserDto> {
-    return this.users.map((user, index) => this.formatUser(index));
+  async create(dto: CreateUserDto): Promise<UserDto> {
+    const createdUser = this.userRepository.create(dto);
+    const savedUser = await this.userRepository.save(createdUser);
+    return savedUser.format();
   }
 
-  create(dto: CreateUserDto): UserDto {
-    const { login, password } = dto;
-    const timestamp = Date.now();
-    const newUser: User = {
-      id: uuidv4(),
-      login,
-      password,
-      version: 1,
-      createdAt: timestamp,
-      updatedAt: timestamp,
-    };
-    this.users.push(newUser);
-    return this.formatUser(this.users.length - 1);
-  }
+  async update(userId: string, updateDto: UpdatePasswordDto): Promise<UserDto> {
+    const updatedUser = await this.findUser(userId);
 
-  update(userId: string, updateDto: UpdatePasswordDto): UserDto {
-    const userIndex = this.findIndex(userId);
-    const user = this.users[userIndex];
-    const { id, createdAt, version, login, password } = user;
-    if (password !== updateDto.oldPassword)
+    if (updatedUser.password !== updateDto.oldPassword)
       forbidden(`The old password does not match`);
-    const updatedUser: User = {
-      id,
-      login,
-      password: updateDto.newPassword,
-      version: version + 1,
-      createdAt,
-      updatedAt: Date.now(),
-    };
-    this.users[userIndex] = updatedUser;
-    return this.formatUser(userIndex);
+
+    updatedUser.password = updateDto.newPassword;
+    updatedUser.version += 1;
+    updatedUser.updatedAt = Date.now().toString();
+
+    const savedUser = await this.userRepository.save(updatedUser);
+    return savedUser.format();
   }
 
-  delete(id: string): any {
-    const index = this.findIndex(id);
-    this.users.splice(index, 1);
+  async delete(id: string) {
+    await this.findUser(id);
+    await this.userRepository.delete(id);
   }
 }

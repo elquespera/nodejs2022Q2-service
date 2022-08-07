@@ -1,84 +1,89 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { notFound } from '../utils';
 import { TrackDto } from './track.dto';
-import { Track } from './track.interface';
-import { v4 as uuidv4 } from 'uuid';
+import { TrackEntity } from './track.entity';
 import { FavService } from '../favs/favs.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrackService {
-  private tracks: Array<Track> = [];
-
   constructor(
     @Inject(forwardRef(() => FavService))
     private favService: FavService,
+
+    @InjectRepository(TrackEntity)
+    private trackRepository: Repository<TrackEntity>,
   ) {}
 
-  contains(trackId: string): boolean {
-    return this.tracks.some(({ id }) => trackId === id);
+  async findTrack(trackId: string, silent = false): Promise<TrackEntity> {
+    const track = await this.trackRepository.findOne({
+      where: { id: trackId },
+    });
+    if (track) return track;
+    if (!silent) notFound('track', trackId);
+    return undefined;
   }
 
-  findIndex(trackId: string): number {
-    const index = this.tracks.findIndex(({ id }) => trackId === id);
-    if (index < 0) notFound('track', trackId);
-    return index;
+  async contains(trackId: string): Promise<boolean> {
+    return (await this.findTrack(trackId, true)) !== undefined;
   }
 
-  findOne(id: string): Track {
-    const index = this.findIndex(id);
-    return this.tracks[index];
+  async findOne(id: string): Promise<TrackEntity> {
+    return await this.findTrack(id);
   }
 
-  findAll(): Array<Track> {
-    return this.tracks;
+  async findAll() {
+    return await this.trackRepository.find();
   }
 
-  create(dto: TrackDto): Track {
+  async create(dto: TrackDto): Promise<TrackEntity> {
+    const createdTrack = this.trackRepository.create(dto);
+    return await this.trackRepository.save(createdTrack);
+  }
+
+  async update(trackId: string, dto: TrackDto): Promise<TrackEntity> {
+    const track = await this.findOne(trackId);
     const { name, artistId, albumId, duration } = dto;
-    const newTrack: Track = {
-      id: uuidv4(),
-      name,
-      artistId,
-      albumId,
-      duration,
-    };
-    this.tracks.push(newTrack);
-    return newTrack;
+    track.name = name;
+    track.artistId = artistId;
+    track.albumId = albumId;
+    track.duration = duration;
+    return await this.trackRepository.save(track);
   }
 
-  update(trackId: string, dto: TrackDto): Track {
-    const track = this.findOne(trackId);
-    const { id } = track;
-    const { name, artistId, albumId, duration } = dto;
-    const updatedTrack: Track = {
-      id,
-      name,
-      artistId,
-      albumId,
-      duration,
-    };
-    this.tracks.push(updatedTrack);
-    return updatedTrack;
+  async delete(id: string) {
+    await this.findOne(id);
+    await this.favService.deleteTrack(id, true);
+    await this.trackRepository.delete(id);
   }
 
-  delete(id: string): any {
-    const index = this.findIndex(id);
-    this.favService.deleteTrack(id, true);
-    this.tracks.splice(index, 1);
-  }
-
-  deleteArtistRef(artistId: string) {
-    this.tracks.forEach((track, index) => {
+  async deleteArtistRef(artistId: string) {
+    const tracks = await this.findAll();
+    tracks.forEach(async (track) => {
       if (track.artistId === artistId) {
-        this.tracks[index].artistId = null;
+        const { name, albumId, duration } = track;
+        await this.update(track.id, {
+          name,
+          artistId: null,
+          albumId,
+          duration,
+        });
       }
     });
   }
 
-  deleteAlbumRef(albumId: string) {
-    this.tracks.forEach((track, index) => {
+  async deleteAlbumRef(albumId: string) {
+    const tracks = await this.findAll();
+    tracks.forEach(async (track) => {
       if (track.albumId === albumId) {
-        this.tracks[index].albumId = null;
+        const { name, artistId, duration } = track;
+        await this.update(track.id, {
+          name,
+          artistId,
+          albumId: null,
+          duration,
+        });
       }
     });
   }
