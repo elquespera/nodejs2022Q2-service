@@ -9,6 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_PROJECT}:app
     env_file:
       - .env
     restart: always
@@ -27,6 +28,7 @@ services:
       dockerfile: Dockerfile-db
     env_file:
       - .env
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_PROJECT}:db
     restart: always
     environment:
       - POSTGRES_USER=${DB_USER}

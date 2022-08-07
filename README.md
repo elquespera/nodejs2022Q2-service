@@ -14,7 +14,7 @@ git clone https://github.com/elquespera/nodejs2022Q2-service.git
 cd nodejs2022Q2-service
 ```
 
-## Checkout `database` branch
+## Checkout `logging` branch
 
 ```
 git checkout database
@@ -30,7 +30,7 @@ mv .env.example .env
 ## Installing NPM modules
 
 ```bash
-git checkout database
+git checkout logging
 ```
 
 ## Rename `.env.example` to `.env`
@@ -64,13 +64,13 @@ After thie app has started in `docker`, open new terminal and enter:
 To run all tests
 
 ```bash
-npm run test
+npm run test:auth
 ```
 
 To run only one of all test suites
 
 ```bash
-npm run test -- <path to suite>
+npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
