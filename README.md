@@ -6,6 +6,8 @@
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
 ## Clone the repository & change into project directory
+=======
+## Download
 
 ```bash
 git clone https://github.com/elquespera/nodejs2022Q2-service.git
@@ -13,6 +15,19 @@ cd nodejs2022Q2-service
 ```
 
 ## Checkout `database` branch
+
+```
+git checkout database
+```
+
+## Rename .env.example to .env
+
+```
+mv .env.example .env
+```
+
+
+## Installing NPM modules
 
 ```bash
 git checkout database
@@ -24,6 +39,7 @@ git checkout database
 mv .env.example .env
 ```
 
+## Build & start app and database containers with `docker-compose`
 
 ## Installing NPM modules
 
