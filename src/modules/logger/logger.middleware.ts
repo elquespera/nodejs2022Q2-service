@@ -9,7 +9,18 @@ export class HttpLoggerMiddleware implements NestMiddleware {
   }
 
   use(request: Request, response: Response, next: NextFunction) {
-    this.logger.debug('Something');
+    const { method, originalUrl, params, body } = request;
+
+    response.on('finish', () => {
+      const { statusCode, statusMessage } = response;
+      this.logger.log(`${method} ${originalUrl} Status: ${statusCode} ${statusMessage}`);
+      if (Object.keys(params).length > 0) {
+        this.logger.verbose(`Request params: ${JSON.stringify(params)}`);
+      }
+      if (Object.keys(body).length > 0) {
+        this.logger.verbose(`Request body: ${JSON.stringify(body)}`);
+      }
+    });
 
     next();
   }
